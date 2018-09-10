@@ -18,7 +18,7 @@ public class Proceso implements Runnable{
     private ArrayList<Integer> tiemposInicios;
     private ArrayList<Integer> tiemposFinales;
     
-    private int quantum = 2;
+    private int quantum;
     private String nombre, texto;
     private int tiempoLlegada, tiempoInicioAbsoluto, tiempoEspera, tiempoFinalTotal, 
             rafaga, prioridad, tiempoRetorno, tiempoFinalizacion, tiempoEnCola;
@@ -41,6 +41,7 @@ public class Proceso implements Runnable{
         this.tiempoEnCola = 0;
         tiemposInicios = new ArrayList<>();
         tiemposFinales = new ArrayList<>();
+        this.quantum = 2;
        
     }
 
@@ -51,7 +52,16 @@ public class Proceso implements Runnable{
     public void agregarTiempoFinal(int tiempo){
         tiemposFinales.add(tiempo);
     }
+
+    public int getQuantum() {
+        return quantum;
+    }
+
+    public void setQuantum(int quantum) {
+        this.quantum = quantum;
+    }
    
+    
     
     public void aumentarTiempoEnCola(int tiempo){
         tiempoEnCola += tiempo;
@@ -188,7 +198,7 @@ public class Proceso implements Runnable{
  
                 try {
                     // Hacemos una pausa para poder apreciar la palabra
-                    Thread.sleep(1000);
+                    Thread.sleep(700);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Proceso.class.getName()).log(Level.SEVERE, null, ex);
                 }

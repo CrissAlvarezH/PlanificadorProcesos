@@ -47,7 +47,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
 
         jLabelTitulo = new javax.swing.JLabel();
         jLabelNombre = new javax.swing.JLabel();
-        jTextFieldNombreProceso = new javax.swing.JTextField();
+        jTextFieldQuantum = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaTexto = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -55,6 +55,8 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jButtonAgregarProceso = new javax.swing.JButton();
         jButtonIniciarSimulacion = new javax.swing.JButton();
         jLabelNombre2 = new javax.swing.JLabel();
+        jLabelNombre3 = new javax.swing.JLabel();
+        jTextFieldNombreProceso1 = new javax.swing.JTextField();
         jLabelFondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -70,12 +72,12 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jLabelNombre.setText("Texto: ");
         getContentPane().add(jLabelNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 90, -1));
 
-        jTextFieldNombreProceso.addActionListener(new java.awt.event.ActionListener() {
+        jTextFieldQuantum.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldNombreProcesoActionPerformed(evt);
+                jTextFieldQuantumActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextFieldNombreProceso, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 80, 190, 30));
+        getContentPane().add(jTextFieldQuantum, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 80, 140, 30));
 
         jTextAreaTexto.setColumns(20);
         jTextAreaTexto.setRows(5);
@@ -116,8 +118,20 @@ public class JFramePrincipal extends javax.swing.JFrame {
 
         jLabelNombre2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabelNombre2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelNombre2.setText("Nombre:");
-        getContentPane().add(jLabelNombre2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 100, -1));
+        jLabelNombre2.setText("Quantum");
+        getContentPane().add(jLabelNombre2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 80, 100, -1));
+
+        jLabelNombre3.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabelNombre3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelNombre3.setText("Nombre:");
+        getContentPane().add(jLabelNombre3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 100, -1));
+
+        jTextFieldNombreProceso1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldNombreProceso1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jTextFieldNombreProceso1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 80, 140, 30));
 
         jLabelFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/fondo_rojo.jpg"))); // NOI18N
         jLabelFondo.setText("jLabelFondo");
@@ -126,19 +140,23 @@ public class JFramePrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextFieldNombreProcesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNombreProcesoActionPerformed
+    private void jTextFieldQuantumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldQuantumActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldNombreProcesoActionPerformed
+    }//GEN-LAST:event_jTextFieldQuantumActionPerformed
 
     private void jButtonAgregarProcesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarProcesoActionPerformed
         // TODO add your handling code here:
         if(verificarCampos()){
-            String nombre = jTextFieldNombreProceso.getText();
+            String nombre = jTextFieldNombreProceso1.getText();
             String texto = jTextAreaTexto.getText();
             int tiempoLlegada = procesos.size();
             int prioridad = generarPrioridad();
+            int quantum = Integer.parseInt( jTextFieldQuantum.getText() );
             
             Proceso proceso = new Proceso(nombre, texto, tiempoLlegada, prioridad);
+            proceso.setQuantum(quantum);
+            
+            jTextFieldQuantum.setEnabled(false);
             
             procesos.add(proceso);
             
@@ -159,6 +177,10 @@ public class JFramePrincipal extends javax.swing.JFrame {
             Utilidades.mostrarMensaje("Advertencia", "No tiene procesos agregados");
         }
     }//GEN-LAST:event_jButtonIniciarSimulacionActionPerformed
+
+    private void jTextFieldNombreProceso1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNombreProceso1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldNombreProceso1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -196,7 +218,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
     }
     
     private boolean verificarCampos(){
-        if(jTextFieldNombreProceso.getText().trim().isEmpty()){
+        if(jTextFieldNombreProceso1.getText().trim().isEmpty()){
             Utilidades.mostrarMensaje("Advertencia", "Debe ingresar el nombre");
             
             return false;
@@ -204,6 +226,12 @@ public class JFramePrincipal extends javax.swing.JFrame {
         
         if(jTextAreaTexto.getText().trim().isEmpty()){
             Utilidades.mostrarMensaje("Advertencia", "Debe ingresar el texto a procesar");
+            
+            return false;
+        }
+        
+        if(jTextFieldQuantum.getText().trim().isEmpty()){
+            Utilidades.mostrarMensaje("Advertencia", "Debe ingresar el quantum");
             
             return false;
         }
@@ -226,11 +254,13 @@ public class JFramePrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelFondo;
     private javax.swing.JLabel jLabelNombre;
     private javax.swing.JLabel jLabelNombre2;
+    private javax.swing.JLabel jLabelNombre3;
     private javax.swing.JLabel jLabelTitulo;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTableProcesos;
     private javax.swing.JTextArea jTextAreaTexto;
-    private javax.swing.JTextField jTextFieldNombreProceso;
+    private javax.swing.JTextField jTextFieldNombreProceso1;
+    private javax.swing.JTextField jTextFieldQuantum;
     // End of variables declaration//GEN-END:variables
 }

@@ -218,23 +218,20 @@ public class JDialogSimulacion extends javax.swing.JDialog implements ListenerHi
     }//GEN-LAST:event_jTextFieldPalabraActionPerformed
 
     private void jButtonIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIniciarActionPerformed
-        // TODO add your handling code here:
-        /*if(!estaEjecutando){
-            ejecutarProceso();
+        
+        if(jButtonIniciar.getText().toLowerCase().equals("iniciar")){
+            if(hiloActual != null){
+                ejecutarProceso(false);
+            }else{
+                ejecutarProceso(true);
+            }
             
-            jButtonIniciar.setText("Pausar");
-            
-            estaEjecutando = true;
+            jButtonIniciar.setText("PAUSAR");
         }else{
-            hiloActual.stop();
+            hiloActual.suspend();
             
-            estaEjecutando = false;
-            
-            jButtonIniciar.setText("Iniciar");
-        }*/
-        
-        ejecutarProceso();
-        
+            jButtonIniciar.setText("INICIAR");
+        }
     }//GEN-LAST:event_jButtonIniciarActionPerformed
 
     /**
@@ -323,33 +320,36 @@ public class JDialogSimulacion extends javax.swing.JDialog implements ListenerHi
                 break;
         }
         
-        ejecutarProceso();
+        ejecutarProceso(true);
+        
+        if( modeloTerminados.getRowCount() == procesos.size() ){
+            jButtonIniciar.setEnabled(false);
+        }
     }
     
-    private void ejecutarProceso(){
-        if(cola.size() > 0){
-            // Ejecutamos el primer proceso que esté en la lista
-            Proceso proceso = cola.remove(0);
-            
-            proceso.agregarTiempoInicio(tiempo);
-            
-            // Si es la primera vez que se ejecuta seteamos el tiemo inicio
-            if(proceso.getTiempoInicioAbsoluto() == -1){
-                proceso.setTiempoInicioAbsoluto(tiempo);
-            }
-            
-            /*if(hiloActual != null){
-                hiloActual.resume();
-            }else{
+    private void ejecutarProceso(boolean nuevoProceso){
+ 
+        if(nuevoProceso){
+            if(cola.size() > 0){
+                // Ejecutamos el primer proceso que esté en la lista
+                Proceso proceso = cola.remove(0);
+
+                proceso.agregarTiempoInicio(tiempo);
+
+                // Si es la primera vez que se ejecuta seteamos el tiemo inicio
+                if(proceso.getTiempoInicioAbsoluto() == -1){
+                    proceso.setTiempoInicioAbsoluto(tiempo);
+                }
+
                 hiloActual = new Thread( proceso );
                 hiloActual.start();
-            }*/
-            
-            hiloActual = new Thread( proceso );
-            hiloActual.start();
+            }else{
+                jTextFieldPalabra.setText("");
+            }
         }else{
-            jTextFieldPalabra.setText("");
+            hiloActual.resume();
         }
+
     }
 
     @Override
